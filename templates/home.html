@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% block content %}
+<!--
+<button class="dkmodebutton" id="mode-toggle">
+  <img id="mode-icon" src="https://5fc98fa113f6897cea53-06dfa63be377ed632ae798753ae0fb3f.ssl.cf2.rackcdn.com/product_images/files/000/181/481/legacy_product_detail_large/data?1681938205" width="25" alt="Toggle Mode">
+</button>-->
+<form method="post" class="buttons">
+  <h1>Welcome to the portal</h1>
+  <h4 class="rules">1. To join a room, enter room code, a name and click join a room button</br>2. To create a room, enter a name and click create a room button</h4>
+  <div>
+    <label>Name:</label>
+    <input
+      class="pick"
+      type="text"
+      placeholder="Pick a name!"
+      name="name"
+      value="{{name}}"
+    />
+  </div>
+  <div class="join">
+    <input class="roomcode" type="text" placeholder="Room Code" name="code" value="{{code}}" />
+    <button class="joinbtn" type="submit" name="join">Join a Room</button>
+  </div>
+  <button class="createbtn" type="submit" name="create" class="create-btn">Create a Room</button>
+  {% if error %}
+  <ul>
+    <li>{{error}}</li>
+  </ul>
+  {% endif %}
+</form>
+{% endblock %}

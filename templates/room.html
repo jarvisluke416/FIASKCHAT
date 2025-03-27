@@ -1,0 +1,99 @@
+<hr/>
+
+{% extends 'base.html' %}
+{% block content %}
+
+<button class="roommodebutton" id="mode-toggle">
+  <img id="mode-icon" src="https://5fc98fa113f6897cea53-06dfa63be377ed632ae798753ae0fb3f.ssl.cf2.rackcdn.com/product_images/files/000/181/481/legacy_product_detail_large/data?1681938205" width="40" alt="Toggle Mode">
+</button>
+<div class="chat-container">
+  <div class="user-list">
+    <h3>Users</h3>
+    <ul id="user-list"></ul>
+  </div>
+
+  <div class="message-box">
+    <h2>Chat Room: <p>{{code}}</p></h2>
+    <div class="messages" id="messages"></div>
+    <div class="inputs">
+      <input
+        type="text"
+        rows="3"
+        placeholder="Message"
+        name="message"
+        id="message"
+      />
+      <button type="button" name="send" id="send-btn" onClick="sendMessage()">
+        Send
+      </button>
+
+    </div>
+  </div>
+
+</div>
+
+<script type="text/javascript">
+  var socketio = io();
+
+  const messages = document.getElementById("messages");
+  const userList = document.getElementById("user-list");
+
+  const createMessage = (name, msg) => {
+    const content = `
+      <div class="text">
+          <span>
+              <strong>${name}</strong>: ${msg}
+          </span>
+          <span class="muted">
+              ${new Date().toLocaleString()}
+          </span>
+      </div>
+    `;
+    messages.innerHTML += content;
+  };
+
+  const updateUserList = (users) => {
+    userList.innerHTML = ""; // Clear current list
+    users.forEach((user) => {
+      const li = document.createElement("li");
+      li.textContent = user;
+      userList.appendChild(li);
+    });
+  };
+
+  // Get the name from the page (assuming you have passed the `name` to the page)
+  const username = "{{name}}";  // Passed from the server (via Flask or Django)
+
+  // Emit the 'join' event with the username
+  socketio.emit("join", username);
+
+  socketio.on("message", (data) => {
+    createMessage(data.name, data.message);
+  });
+
+  socketio.on("updateUserList", (users) => {
+    updateUserList(users);
+  });
+
+  const sendMessage = () => {
+    const message = document.getElementById("message");
+    if (message.value == "") return;
+    socketio.emit("message", { data: message.value });
+    message.value = "";
+  };
+
+  // Event listener to handle 'Enter' key
+  document.getElementById('message').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();  // Prevent the default form submission or newline
+      sendMessage();  // Trigger sendMessage function
+    }
+  });
+</script>
+
+{% for msg in messages %}
+<script type="text/javascript">
+  createMessage("{{msg.name}}", "{{msg.message}}");
+</script>
+{% endfor %} 
+{% endblock %}
