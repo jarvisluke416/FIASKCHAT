@@ -30,27 +30,27 @@ def home():
         create = request.form.get("create", False)
 
         if not name:
-            return render_template("home.html", error="Please enter a name.", code=code, name=name)
+            return render_template("home.html", error="Please enter a name.", code=code, name=name, rooms=rooms)
 
         if join != False and not code:
-            return render_template("home.html", error="Please enter a room code.", code=code, name=name)
+            return render_template("home.html", error="Please enter a room code.", code=code, name=name, rooms=rooms)
         
         room = code
         if create != False:
             room = generate_unique_code(4)
             rooms[room] = {"members": [], "messages": []}  # Store users as a list
         elif code not in rooms:
-            return render_template("home.html", error="Room does not exist.", code=code, name=name)
+            return render_template("home.html", error="Room does not exist.", code=code, name=name, rooms=rooms)
         
         session["room"] = room
         session["name"] = name
         return redirect(url_for("room"))
 
-    return render_template("home.html")
+    return render_template("home.html", rooms=rooms)  # Pass the rooms list here
 
 @app.route("/room")
 def room():
-    room = session.get("room")
+    room = request.args.get("code", session.get("room"))
     if room is None or session.get("name") is None or room not in rooms:
         return redirect(url_for("home"))
 
