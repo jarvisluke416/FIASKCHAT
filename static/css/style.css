@@ -87,8 +87,8 @@ p {
 
 .pick {
   position: relative;
-  right: 16px;
-  top: 8px;
+  left: 250px;
+  bottom: 77px;
   width: 390px;
   height: 40px;
   border-radius: 5%;
@@ -97,8 +97,8 @@ p {
 
 .roomcode {
   position: relative;
-  left: 210px;
-  top: 80px;
+  left: 450px;
+  bottom: 30px;
   width: 390px;
   height: 40px;
   border-radius: 5%;
@@ -109,10 +109,10 @@ p {
 .createbtn {
   font-size: 30px;
   position: relative;
-  left: 10px;  
-  bottom: 75px;
+  left: 250px;  
+  bottom: 150px;
   width: 400px;
-  padding: 2%;
+  padding: 1%;
   border: solid 1px #107c77;
   color: gold;
   background-color: #107c77;
@@ -122,10 +122,10 @@ p {
 .joinbtn {
   font-size: 30px;
   position: relative;
-  right: 187px;
+  left: 53px;
   width: 400px;
-  top: 130px;
-  padding: 2%;
+  top: 15px;
+  padding: 1%;
   border: solid 1px #107c77;
   color: gold;
   background-color: #107c77;
@@ -143,11 +143,33 @@ p {
   position: relative;
   right: 200px;
   top: 40px;
+  list-style-type: none;
 }
 
 .rules {
   position: relative;
-  left: 15px;
+  left: 250px;
+  bottom: 50px;
+}
+
+.current {
+  position: relative;
+  top: 170px;
+  right: 275px; /* Adjust the value as needed to move it to the left */
+  color: lime;
+  font-size: 25px;
+}
+
+.roomlist {
+  position: relative;
+  right: 530px;
+  top: 200px;
+  list-style-type: none;
+
+}
+
+.code {
+  color: navy;
 }
 
 .joinbtn:hover, .createbtn:hover {
@@ -163,6 +185,13 @@ label {
   position: relative;
   left: 175px;
   color: #107c77;
+}
+
+h1 {
+  position: relative;
+  left: 250px;
+  font-size: 50px;
+  color: red;
 }
 
 h3 {
