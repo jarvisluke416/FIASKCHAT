@@ -1,11 +1,10 @@
-<hr/>
-
 {% extends 'base.html' %}
 {% block content %}
 
 <button class="roommodebutton" id="mode-toggle">
   <img id="mode-icon" src="https://5fc98fa113f6897cea53-06dfa63be377ed632ae798753ae0fb3f.ssl.cf2.rackcdn.com/product_images/files/000/181/481/legacy_product_detail_large/data?1681938205" width="40" alt="Toggle Mode">
 </button>
+
 <div class="chat-container">
   <div class="user-list">
     <h3>Users</h3>
@@ -13,23 +12,13 @@
   </div>
 
   <div class="message-box">
-    <h2>Chat Room: <p>{{code}}</p></h2>
+    <h2>Chat Room: <p>{{ code }}</p></h2>
     <div class="messages" id="messages"></div>
     <div class="inputs">
-      <input
-        type="text"
-        rows="3"
-        placeholder="Message"
-        name="message"
-        id="message"
-      />
-      <button type="button" name="send" id="send-btn" onClick="sendMessage()">
-        Send
-      </button>
-
+      <input type="text" rows="3" placeholder="Message" name="message" id="message" />
+      <button type="button" name="send" id="send-btn" onClick="sendMessage()">Send</button>
     </div>
   </div>
-
 </div>
 
 <script type="text/javascript">
@@ -38,15 +27,17 @@
   const messages = document.getElementById("messages");
   const userList = document.getElementById("user-list");
 
+  // Function to detect URLs in a message and turn them into clickable links
   const createMessage = (name, msg) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g; // Regex to detect URLs
+
+    // Replace URLs in the message with anchor tags
+    msg = msg.replace(urlRegex, '<a href="$&" target="_blank" class="chat-link" onclick="openPopup(event, this.href)">$&</a>');
+
     const content = `
       <div class="text">
-          <span>
-              <strong>${name}</strong>: ${msg}
-          </span>
-          <span class="muted">
-              ${new Date().toLocaleString()}
-          </span>
+        <span><strong>${name}</strong>: ${msg}</span>
+        <span class="muted">${new Date().toLocaleString()}</span>
       </div>
     `;
     messages.innerHTML += content;
@@ -62,7 +53,7 @@
   };
 
   // Get the name from the page (assuming you have passed the `name` to the page)
-  const username = "{{name}}";  // Passed from the server (via Flask or Django)
+  const username = "{{ name }}";  // Passed from the server (via Flask)
 
   // Emit the 'join' event with the username
   socketio.emit("join", username);
@@ -89,11 +80,18 @@
       sendMessage();  // Trigger sendMessage function
     }
   });
+
+  // Function to open the link in a popup window
+  function openPopup(event, url) {
+    event.preventDefault(); // Prevent the default anchor behavior
+    window.open(url, 'popup', 'width=600,height=400,scrollbars=yes,resizable=yes');
+  }
 </script>
 
 {% for msg in messages %}
 <script type="text/javascript">
-  createMessage("{{msg.name}}", "{{msg.message}}");
+  createMessage("{{ msg.name }}", "{{ msg.message }}");
 </script>
-{% endfor %} 
+{% endfor %}
+
 {% endblock %}
