@@ -141,9 +141,8 @@ p {
 }
 
 .homemodebutton {
-position: relative;
-left: 430px;
-bottom: 80px;
+  position: relative;
+  left: 350px;
 }
 
 #user-list {
@@ -180,6 +179,17 @@ bottom: 80px;
   background-color: oldlace;
 }
 
+.please {
+  position: relative;
+  color: red;
+  left: 170px;
+  bottom: 160px;
+  list-style-type: none;
+
+}
+a {
+  color: lime;
+}
 .joinbtn:hover, .createbtn:hover {
     background-color: #085c50;
 
